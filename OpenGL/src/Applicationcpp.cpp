@@ -13,8 +13,6 @@ int main(void)
     if (!glfwInit())
         return -1;
 
-
-
     /* 创建 window 和它的 OpenGL 上下文 */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
@@ -37,20 +35,24 @@ int main(void)
     // 4.6.14756 Compatibility Profile Context 20.40.52 27.20.14052.10
     std::cout << glGetString(GL_VERSION) << std::endl;
     
-    unsigned int a;
-    glGenBuffers(1, &a); // 如果没有成功 glewInit，运行时会抛出异常
+    float position[6] =
+    {
+         0.5f,  0.5f,
+        -0.5f,  0.5f,
+         0.5f, -0.5f
+    };
+
+    unsigned int buffer;
+    glGenBuffers(1, &buffer); // 如果没有成功 glewInit，运行相关函数时会抛出异常
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), position, GL_STATIC_DRAW);  // 查看文档 docs.gl
 
     /* 循环直到关闭窗口 */
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // 通过传统OpenGL渲染三角形
-        glBegin(GL_TRIANGLES);
-        glVertex2f(0.5f, 0.5f);
-        glVertex2f(-0.5f, 0.5f);
-        glVertex2f(0.5f, -0.5f);
-        glEnd();
+        glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
 
 
         /* 交换前后缓冲区 */
