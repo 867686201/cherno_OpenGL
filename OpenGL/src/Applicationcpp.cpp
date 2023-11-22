@@ -118,17 +118,24 @@ int main(void)
     // 4.6.14756 Compatibility Profile Context 20.40.52 27.20.14052.10
     std::cout << glGetString(GL_VERSION) << std::endl;
     
-    float position[6] =
+    float position[] =
     {
-         0.5f,  0.5f,
+        -0.5f, -0.5f,
         -0.5f,  0.5f,
-         0.5f, -0.5f
+         0.5f, -0.5f,
+         0.5f,  0.5f
+    };
+
+    unsigned int indices[]
+    {
+        0, 1, 2,
+        1, 2, 3
     };
 
     unsigned int buffer;
     glGenBuffers(1, &buffer); // 如果没有成功 glewInit，运行相关函数时会抛出异常
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), position, GL_STATIC_DRAW);  // 查看文档 docs.gl
+    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), position, GL_STATIC_DRAW);  // 查看文档 docs.gl
 
     glEnableVertexAttribArray(0);
     /**
@@ -141,6 +148,11 @@ int main(void)
      * @param pointer, 属性 offset 的字节大小
      */
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
+    unsigned int ibo;
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     std::string filePath = "OpenGL/res/shaders/basic.shader";
 
@@ -157,7 +169,8 @@ int main(void)
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
+        //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         /* 交换前后缓冲区 */
         glfwSwapBuffers(window);
