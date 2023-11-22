@@ -6,35 +6,38 @@
 
 // GL/glew.h 需要在 GLFW 等头文件之前
 
-static unsigned int GLCompileShader(unsigned int type, const std::string& source)
+static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
-    unsigned int shader = glCreateShader(type);
-    const char* shaderCode = source.c_str();
-    glShaderSource(shader, 1, &shaderCode, 0);
-    glCompileShader(shader);
+    unsigned int id = glCreateShader(type);
+    const char* src = source.c_str();
+    glShaderSource(id, 1, &src, 0);
+    glCompileShader(id);
 
     int result;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
     if (result == GL_FALSE)
     {
         int length;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*)malloc(length * sizeof(char));
-        glGetShaderInfoLog(shader, length, &length, message);
-        std::cout << "shader error:" << message << std::endl;
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        char* message = (char*)alloca(length * sizeof(char)); // alloca 才是在栈上申请内存, 且使用 malloc 时需要手动 free
+        glGetShaderInfoLog(id, length, &length, message);
+        std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "shader" << std::endl;
+        std::cout << message << std::endl; 
+        glDeleteShader(id);
+        return 0; // 编译 shader 失败
     }
-    return shader;
+    return id;
 }
 
-static unsigned int GLCreateProgram(const std::string& vertexShader, const std::string& fragmentShader)
+static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
     unsigned int program = glCreateProgram();
-    unsigned int vs = GLCompileShader(GL_VERTEX_SHADER, vertexShader);   // GL_VERTEX_SHADER 可以看做一个数, 直接作为参数传入
-    unsigned int fs = GLCompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);   // GL_VERTEX_SHADER 可以看做一个数, 直接作为参数传入
+    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
-    //glValidateProgram(program);   // 似乎没有作用
+    glValidateProgram(program);   // 似乎没有作用
     glDeleteShader(vs);
     glDeleteShader(fs);
     return program;
@@ -115,8 +118,8 @@ int main(void)
         "   FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}\n";
 
-    unsigned int ID = GLCreateProgram(vertexShader, fragmentShader);
-    glUseProgram(ID);
+    unsigned int shader = CreateShader(vertexShader, fragmentShader);
+    glUseProgram(shader);
 
 
     /* 循环直到关闭窗口 */
@@ -132,7 +135,7 @@ int main(void)
         /* 处理轮询事件 */
         glfwPollEvents();
     }
-    glDeleteProgram(ID);
+    glDeleteProgram(shader);
     // 释放与 GLFW 相关的资源，并确保正确地关闭和清理 GLFW 库的状态
     glfwTerminate();
     return 0;
