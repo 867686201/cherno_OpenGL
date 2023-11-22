@@ -6,29 +6,25 @@
 #include <fstream>
 #include <sstream>
 
-
-
 // GL/glew.h 需要在 GLFW 等头文件之前
-
-enum class ShaderType // 我的版本, 这里只有 ReadShader 函数中使用到，因此放在函数里更好
-{
-    NONE = -1,
-    VERTEX = 0,
-    FRAGMENT = 1
-};            
 
 struct ShaderCode
 {
-    std::string src[2];  // 我的版本, 我想要直接获取枚举的值来选择数组, 因此这里选择了数组, 
-                         // 而视频中版本直接使用的 vs 和 fs, 而数组通过 stringstream 来实现
-                         // 就结构体而言视频版本更直观
+    std::string VertexSource;
+    std::string FragmentSource;
 };
 
 static ShaderCode ReadShader(const std::string& filePath)
 {
+    enum class ShaderType 
+    {
+        NONE = -1,
+        VERTEX = 0,  // 通过合理设值, 可以将枚举转换成整型, 用作数组下标
+        FRAGMENT = 1
+    };
     ShaderType type = ShaderType::NONE;
     std::ifstream fstream(filePath);
-    ShaderCode shaderCode;
+    std::stringstream ss[2];
     if (!fstream.is_open())
     {
         std::cout << "Failed to open shader file" << std::endl;
@@ -49,10 +45,10 @@ static ShaderCode ReadShader(const std::string& filePath)
         }
         else
         {
-           shaderCode.src[static_cast<int>(type)] += line + "\n";  // 字符串, 直接通过 + 来连接不同行
+            ss[static_cast<int>(type)] << line << "\n";
         }
     }
-    return shaderCode;
+    return { ss[0].str(), ss[1].str() };
 }
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
@@ -146,14 +142,13 @@ int main(void)
      */
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
-
     std::string filePath = "OpenGL/res/shaders/basic.shader";
 
+    ShaderCode source = ReadShader(filePath);
 
+    unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
+    
 
-    ShaderCode shadeCode = ReadShader(filePath);
-
-    unsigned int shader = CreateShader(shadeCode.src[0], shadeCode.src[1]);
     glUseProgram(shader);
 
 
