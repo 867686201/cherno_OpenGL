@@ -47,6 +47,18 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), position, GL_STATIC_DRAW);  // 查看文档 docs.gl
 
+    glEnableVertexAttribArray(0);
+    /**
+     * glVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)
+     * @param index, 属性的索引, 如位置在索引0，纹理在索引1，法线在索引2
+     * @param size, 该属性的 count, 每个顶点的某个属性有多少个 count, 如这里每个顶点的位置属性有 2 个
+     * @param type, 数据类型
+     * @param normalized, 只用于整数, 归一化到 [0, 1] 或 [-1, 1] (根据是否是有符号整数)
+     * @param stride, 整个顶点的字节大小
+     * @param pointer, 属性 offset 的字节大小
+     */
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
     /* 循环直到关闭窗口 */
     while (!glfwWindowShouldClose(window))
     {
