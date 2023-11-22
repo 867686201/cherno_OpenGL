@@ -10,6 +10,11 @@
 
 #define ASSERT(x) if(!x) __debugbreak();   // 断言, 如果为 false, 则调用 msvc 的断点
 
+//  \ 是换行转义符, 之后不能加空格
+#define GLCall(x) GLClearError();\
+    x;\
+    ASSERT(GLLogCall()) 
+ 
 static void GLClearError()   // 循环获取错误, 即获取所有错误, 则清空错误了
 {
     while (glGetError() != GL_NO_ERROR);  
@@ -187,9 +192,7 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
-        GLClearError();
-        glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
-        ASSERT(GLLogCall());
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
 
         /* 交换前后缓冲区 */
         glfwSwapBuffers(window);
