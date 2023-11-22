@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OpenGL\src\Applicationcpp.cpp" />
+    <ClCompile Include="OpenGL\src\Application.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />

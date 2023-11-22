@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OpenGL\src\Applicationcpp.cpp">
+    <ClCompile Include="OpenGL\src\Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
