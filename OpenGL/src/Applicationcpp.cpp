@@ -8,17 +8,21 @@
 
 // GL/glew.h 需要在 GLFW 等头文件之前
 
+#define ASSERT(x) if(!x) __debugbreak();   // 断言, 如果为 false, 则调用 msvc 的断点
+
 static void GLClearError()   // 循环获取错误, 即获取所有错误, 则清空错误了
 {
     while (glGetError() != GL_NO_ERROR);  
 }
 
-static void GLCheckError()   // 循环获取错误, 每获取到错误, 就输出错误码, 获取错误过程遵循先入先出原则, 即先发生的错误先获取
+static bool GLLogCall()   // 循环获取错误, 每获取到错误, 就输出错误码, 获取错误过程遵循先入先出原则, 即先发生的错误先获取
 {
     while (GLenum error = glGetError())
     {
         std::cout << "[OpenGL Error] (" << std::hex << error << ")" << std::endl;   // 由于错误码是 16 进制, 通过 hex 输出16进制数
+        return false;     // 如果有错误, 则返回 false
     }
+    return true;
 }
 
 struct ShaderCode
@@ -185,7 +189,7 @@ int main(void)
         //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
         GLClearError();
         glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
-        GLCheckError();
+        ASSERT(GLLogCall());
 
         /* 交换前后缓冲区 */
         glfwSwapBuffers(window);
