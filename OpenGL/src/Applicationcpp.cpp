@@ -2,8 +2,44 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <string>
 
 // GL/glew.h 需要在 GLFW 等头文件之前
+
+static unsigned int GLCompileShader(unsigned int type, const std::string& source)
+{
+    unsigned int shader = glCreateShader(type);
+    const char* shaderCode = source.c_str();
+    glShaderSource(shader, 1, &shaderCode, 0);
+    glCompileShader(shader);
+
+    int result;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+    if (result == GL_FALSE)
+    {
+        int length;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+        char* message = (char*)malloc(length * sizeof(char));
+        glGetShaderInfoLog(shader, length, &length, message);
+        std::cout << "shader error:" << message << std::endl;
+    }
+    return shader;
+}
+
+static unsigned int GLCreateProgram(const std::string& vertexShader, const std::string& fragmentShader)
+{
+    unsigned int program = glCreateProgram();
+    unsigned int vs = GLCompileShader(GL_VERTEX_SHADER, vertexShader);   // GL_VERTEX_SHADER 可以看做一个数, 直接作为参数传入
+    unsigned int fs = GLCompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+    //glValidateProgram(program);   // 似乎没有作用
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+    return program;
+}
+
 
 int main(void)
 {
@@ -59,6 +95,30 @@ int main(void)
      */
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
+    const std::string vertexShader =
+        "#version 330 core\n"
+        "\n"
+        "layout(location = 0) in vec4 position; \n"
+        "\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = position; \n"
+        "}\n" ;
+
+    const std::string fragmentShader =
+        "#version 330 core\n"
+        "\n"
+        "out vec4 FragColor; \n"
+        "\n"
+        "void main()\n"
+        "{\n"
+        "   FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
+        "}\n";
+
+    unsigned int ID = GLCreateProgram(vertexShader, fragmentShader);
+    glUseProgram(ID);
+
+
     /* 循环直到关闭窗口 */
     while (!glfwWindowShouldClose(window))
     {
@@ -66,14 +126,13 @@ int main(void)
 
         glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
 
-
         /* 交换前后缓冲区 */
         glfwSwapBuffers(window);
 
         /* 处理轮询事件 */
         glfwPollEvents();
     }
-
+    glDeleteProgram(ID);
     // 释放与 GLFW 相关的资源，并确保正确地关闭和清理 GLFW 库的状态
     glfwTerminate();
     return 0;
