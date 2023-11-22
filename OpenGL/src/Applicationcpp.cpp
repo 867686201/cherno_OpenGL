@@ -3,8 +3,57 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
+
+
 
 // GL/glew.h 需要在 GLFW 等头文件之前
+
+enum class ShaderType // 我的版本, 这里只有 ReadShader 函数中使用到，因此放在函数里更好
+{
+    NONE = -1,
+    VERTEX = 0,
+    FRAGMENT = 1
+};            
+
+struct ShaderCode
+{
+    std::string src[2];  // 我的版本, 我想要直接获取枚举的值来选择数组, 因此这里选择了数组, 
+                         // 而视频中版本直接使用的 vs 和 fs, 而数组通过 stringstream 来实现
+                         // 就结构体而言视频版本更直观
+};
+
+static ShaderCode ReadShader(const std::string& filePath)
+{
+    ShaderType type = ShaderType::NONE;
+    std::ifstream fstream(filePath);
+    ShaderCode shaderCode;
+    if (!fstream.is_open())
+    {
+        std::cout << "Failed to open shader file" << std::endl;
+    }
+    std::string line;
+    while (std::getline(fstream, line))
+    {
+        if (line.find("#shader") != std::string::npos) // 找到 shader
+        {
+            if (line.find("vertex") != std::string::npos) // vertex shader
+            {
+                type = ShaderType::VERTEX;
+            }
+            else if (line.find("fragment") != std::string::npos)
+            {
+                type = ShaderType::FRAGMENT;
+            }
+        }
+        else
+        {
+           shaderCode.src[static_cast<int>(type)] += line + "\n";  // 字符串, 直接通过 + 来连接不同行
+        }
+    }
+    return shaderCode;
+}
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
@@ -51,7 +100,6 @@ int main(void)
     /* 初始化库 */
     if (!glfwInit())
         return -1;
-
     /* 创建 window 和它的 OpenGL 上下文 */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
@@ -98,27 +146,14 @@ int main(void)
      */
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
-    const std::string vertexShader =
-        "#version 330 core\n"
-        "\n"
-        "layout(location = 0) in vec4 position; \n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = position; \n"
-        "}\n" ;
 
-    const std::string fragmentShader =
-        "#version 330 core\n"
-        "\n"
-        "out vec4 FragColor; \n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "   FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
-        "}\n";
+    std::string filePath = "OpenGL/res/shaders/basic.shader";
 
-    unsigned int shader = CreateShader(vertexShader, fragmentShader);
+
+
+    ShaderCode shadeCode = ReadShader(filePath);
+
+    unsigned int shader = CreateShader(shadeCode.src[0], shadeCode.src[1]);
     glUseProgram(shader);
 
 
