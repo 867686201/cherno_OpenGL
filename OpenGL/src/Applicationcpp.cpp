@@ -11,20 +11,22 @@
 #define ASSERT(x) if(!x) __debugbreak();   // 断言, 如果为 false, 则调用 msvc 的断点
 
 //  \ 是换行转义符, 之后不能加空格
+// #x 将 x 转换为字符串, __FILE__ 和 __LINE__ 获取该代码的文件名和行号
 #define GLCall(x) GLClearError();\
     x;\
-    ASSERT(GLLogCall()) 
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__)) 
  
 static void GLClearError()   // 循环获取错误, 即获取所有错误, 则清空错误了
 {
     while (glGetError() != GL_NO_ERROR);  
 }
 
-static bool GLLogCall()   // 循环获取错误, 每获取到错误, 就输出错误码, 获取错误过程遵循先入先出原则, 即先发生的错误先获取
+static bool GLLogCall(const char* function, const char* file, int line)   // 循环获取错误, 每获取到错误, 就输出错误码, 获取错误过程遵循先入先出原则, 即先发生的错误先获取
 {
     while (GLenum error = glGetError())
     {
-        std::cout << "[OpenGL Error] (" << std::hex << error << ")" << std::endl;   // 由于错误码是 16 进制, 通过 hex 输出16进制数
+        std::cout << "[OpenGL Error] (" << std::hex << error << std::dec << "): ";   // 由于错误码是 16 进制, 通过 hex 输出 16 进制数, 使用后切换为 10 进制
+        std::cout << function << " " << file << ":" << line << std::endl;
         return false;     // 如果有错误, 则返回 false
     }
     return true;
