@@ -12,9 +12,9 @@
 
 //  \ 是换行转义符, 之后不能加空格
 // #x 将 x 转换为字符串, __FILE__ 和 __LINE__ 获取该代码的文件名和行号
-#define GLCall(x) GLClearError();\
+#define GLCall(x) {GLClearError();\
     x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__)) 
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__)) }
  
 static void GLClearError()   // 循环获取错误, 即获取所有错误, 则清空错误了
 {
