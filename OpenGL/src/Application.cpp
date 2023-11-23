@@ -125,6 +125,11 @@ int main(void)
     /* 初始化库 */
     if (!glfwInit())
         return -1;
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     /* 创建 window 和它的 OpenGL 上下文 */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
@@ -166,6 +171,10 @@ int main(void)
         1, 2, 3
     };
 
+    unsigned int vao; 
+    GLCall(glGenVertexArrays(1, &vao)); // 创建顶点数组对象
+    GLCall(glBindVertexArray(vao)); 
+
     unsigned int buffer;
     GLCall(glGenBuffers(1, &buffer)); // 如果没有成功 glewInit，运行相关函数时会抛出异常
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
@@ -189,18 +198,20 @@ int main(void)
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     std::string filePath = "OpenGL/res/shaders/basic.shader";
-
     ShaderCode source = ReadShader(filePath);
-
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-    
-
     GLCall(glUseProgram(shader));
 
     int location;
     GLCall(location = glGetUniformLocation(shader, "u_Color"));
     ASSERT(location != -1);
     GLCall(glUniform4f(location, 0.6f, 0.2f,0.3f, 1.0f));
+
+    // 解绑顶点数组, shader, 顶点缓冲, 索引缓冲
+    GLCall(glBindVertexArray(0));
+    GLCall(glUseProgram(0));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 
     float r = 0.6f;
     float increment = 0.05f;
@@ -210,16 +221,20 @@ int main(void)
     {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
+        // 只需要重新绑定 shader, 顶点数组 和 索引缓冲
+        GLCall(glUseProgram(shader));
         GLCall(glUniform4f(location, r, 0.2f, 0.3f, 1.0f));
+
+        GLCall(glBindVertexArray(vao));
+        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+        
+        //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
         if (r > 1.0f)
             increment = -0.05f;
         if (r < 0.0f)
             increment = 0.05f;
         r += increment;
-
-
-        //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
 
         /* 交换前后缓冲区 */
         glfwSwapBuffers(window);
