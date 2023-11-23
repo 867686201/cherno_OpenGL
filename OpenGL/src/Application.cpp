@@ -12,9 +12,12 @@
 
 //  \ 是换行转义符, 之后不能加空格
 // #x 将 x 转换为字符串, __FILE__ 和 __LINE__ 获取该代码的文件名和行号
-#define GLCall(x) {GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__)) }
+// do-while 不是能够改变作用域, 而是确保在宏中的代码块可以被当做一个语句使用
+#define GLCall(x) do{\
+	    GLClearError();\
+        x;\
+        ASSERT(GLLogCall(#x, __FILE__, __LINE__));\
+	} while(0)
  
 static void GLClearError()   // 循环获取错误, 即获取所有错误, 则清空错误了
 {
@@ -77,22 +80,23 @@ static ShaderCode ReadShader(const std::string& filePath)
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
-    GLCall(unsigned int id = glCreateShader(type));
+    unsigned int id; // 提升作用域
+    GLCall(id = glCreateShader(type));  
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, 0);
-    glCompileShader(id);
+    GLCall(glShaderSource(id, 1, &src, 0));
+    GLCall(glCompileShader(id));
 
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
     if (result == GL_FALSE)
     {
         int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char* message = (char*)alloca(length * sizeof(char)); // alloca 才是在栈上申请内存, 且使用 malloc 时需要手动 free
-        glGetShaderInfoLog(id, length, &length, message);
+        GLCall(glGetShaderInfoLog(id, length, &length, message));
         std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "shader" << std::endl;
         std::cout << message << std::endl; 
-        glDeleteShader(id);
+        GLCall(glDeleteShader(id));
         return 0; // 编译 shader 失败
     }
     return id;
@@ -100,15 +104,16 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
 
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
-    unsigned int program = glCreateProgram();
+    unsigned int program;  // 提升作用域
+    GLCall(program = glCreateProgram());
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);   // GL_VERTEX_SHADER 可以看做一个数, 直接作为参数传入
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);   // 似乎没有作用
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    GLCall(glAttachShader(program, vs));
+    GLCall(glAttachShader(program, fs));
+    GLCall(glLinkProgram(program));
+    GLCall(glValidateProgram(program));   // 似乎没有作用
+    GLCall(glDeleteShader(vs));
+    GLCall(glDeleteShader(fs));
     return program;
 }
 
@@ -140,7 +145,9 @@ int main(void)
 
     // 当有一个有效的 OpenGL 上下文之后，可以输出版本
     // 4.6.14756 Compatibility Profile Context 20.40.52 27.20.14052.10
-    std::cout << glGetString(GL_VERSION) << std::endl;
+    unsigned char* glVersion;  // 提升作用域
+    GLCall(glVersion = (unsigned char*)glGetString(GL_VERSION));   
+    std::cout << "Status: Using GL " << glVersion << std::endl;
     
     float position[] =
     {
@@ -157,11 +164,11 @@ int main(void)
     };
 
     unsigned int buffer;
-    glGenBuffers(1, &buffer); // 如果没有成功 glewInit，运行相关函数时会抛出异常
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), position, GL_STATIC_DRAW);  // 查看文档 docs.gl
+    GLCall(glGenBuffers(1, &buffer)); // 如果没有成功 glewInit，运行相关函数时会抛出异常
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), position, GL_STATIC_DRAW));  // 查看文档 docs.gl
 
-    glEnableVertexAttribArray(0);
+    GLCall(glEnableVertexAttribArray(0));
     /**
      * glVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)
      * @param index, 属性的索引, 如位置在索引0，纹理在索引1，法线在索引2
@@ -171,12 +178,12 @@ int main(void)
      * @param stride, 整个顶点的字节大小
      * @param pointer, 属性 offset 的字节大小
      */
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
     unsigned int ibo;
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    GLCall(glGenBuffers(1, &ibo));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     std::string filePath = "OpenGL/res/shaders/basic.shader";
 
@@ -185,17 +192,16 @@ int main(void)
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
     
 
-    glUseProgram(shader);
+    GLCall(glUseProgram(shader));
 
 
     /* 循环直到关闭窗口 */
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
         //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
-        if (false)                                                // 问题1, 如果不加括号, if 等语句会存在问题
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
 
         /* 交换前后缓冲区 */
         glfwSwapBuffers(window);
@@ -203,7 +209,7 @@ int main(void)
         /* 处理轮询事件 */
         glfwPollEvents();
     }
-    glDeleteProgram(shader);
+    GLCall(glDeleteProgram(shader));
     // 释放与 GLFW 相关的资源，并确保正确地关闭和清理 GLFW 库的状态
     glfwTerminate();
     return 0;
