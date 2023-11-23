@@ -8,7 +8,7 @@
 
 // GL/glew.h 需要在 GLFW 等头文件之前
 
-#define ASSERT(x) if(!x) __debugbreak();   // 断言, 如果为 false, 则调用 msvc 的断点
+#define ASSERT(x) if(!(x)) __debugbreak()   // 断言, 如果为 false, 则调用 msvc 的断点  注意括号 (x)
 
 //  \ 是换行转义符, 之后不能加空格
 // #x 将 x 转换为字符串, __FILE__ 和 __LINE__ 获取该代码的文件名和行号
@@ -139,6 +139,9 @@ int main(void)
     */
     glfwMakeContextCurrent(window);
 
+    glfwSwapInterval(2); // 每等到 interval 个垂直同步信号后开始渲染新的一帧到后缓冲区, 如果为 0 则是关闭垂直同步, 帧率没有上限
+                         // 60hz屏幕下, 1 为 60hz, 2 为 30hz, 3 为 20 hz
+
     // 必须在初始化上下文之后调用 glewInit
     if (glewInit() != GLEW_OK)
         std::cout << "glewInitError" << std::endl;
@@ -194,11 +197,26 @@ int main(void)
 
     GLCall(glUseProgram(shader));
 
+    int location;
+    GLCall(location = glGetUniformLocation(shader, "u_Color"));
+    ASSERT(location != -1);
+    GLCall(glUniform4f(location, 0.6f, 0.2f,0.3f, 1.0f));
+
+    float r = 0.6f;
+    float increment = 0.05f;
 
     /* 循环直到关闭窗口 */
     while (!glfwWindowShouldClose(window))
     {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+        GLCall(glUniform4f(location, r, 0.2f, 0.3f, 1.0f));
+        if (r > 1.0f)
+            increment = -0.05f;
+        if (r < 0.0f)
+            increment = 0.05f;
+        r += increment;
+
 
         //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
