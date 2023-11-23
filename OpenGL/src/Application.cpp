@@ -77,7 +77,7 @@ static ShaderCode ReadShader(const std::string& filePath)
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
-    unsigned int id = glCreateShader(type);
+    GLCall(unsigned int id = glCreateShader(type));
     const char* src = source.c_str();
     glShaderSource(id, 1, &src, 0);
     glCompileShader(id);
@@ -194,6 +194,7 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
+        if (false)                                                // 问题1, 如果不加括号, if 等语句会存在问题
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
 
         /* 交换前后缓冲区 */
