@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "VertexArray.h"
 
 struct ShaderCode
 {
@@ -148,23 +149,15 @@ int main(void)
         1, 2, 3
     };
 
-    unsigned int vao;
-    GLCall(glGenVertexArrays(1, &vao)); // 创建顶点数组对象
-    GLCall(glBindVertexArray(vao));
+
     {
+        
         VertexBuffer vb(position, 4 * 2 * sizeof(float));
 
-        GLCall(glEnableVertexAttribArray(0));
-        /**
-         * glVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)
-         * @param index, 属性的索引, 如位置在索引0，纹理在索引1，法线在索引2
-         * @param size, 该属性的 count, 每个顶点的某个属性有多少个 count, 如这里每个顶点的位置属性有 2 个
-         * @param type, 数据类型
-         * @param normalized, 只用于整数, 归一化到 [0, 1] 或 [-1, 1] (根据是否是有符号整数)
-         * @param stride, 整个顶点的字节大小
-         * @param pointer, 属性 offset 的字节大小
-         */
-        GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+        VertexBufferLayout layout;
+        layout.Push<float>(2);
+        
+        VertexArray va(vb, layout);
 
         IndexBuffer ib(indices, 6);
 
@@ -179,7 +172,7 @@ int main(void)
         GLCall(glUniform4f(location, 0.6f, 0.2f, 0.3f, 1.0f));
 
         // 解绑顶点数组, shader, 顶点缓冲, 索引缓冲
-        GLCall(glBindVertexArray(0));
+        va.Unbind();
         GLCall(glUseProgram(0));
         vb.Unbind();
         ib.Unbind();
@@ -196,7 +189,7 @@ int main(void)
             GLCall(glUseProgram(shader));
             GLCall(glUniform4f(location, r, 0.2f, 0.3f, 1.0f));
 
-            GLCall(glBindVertexArray(vao));
+            va.Bind();
             ib.Bind();
 
             //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
