@@ -30,7 +30,7 @@ class VertexBufferLayout
 {
 
 public:
-	VertexBufferLayout() : m_Stride(0), m_Count(0) {};
+	VertexBufferLayout() : m_Stride(0) {};
 	~VertexBufferLayout() {};
 
 	template<typename T>
