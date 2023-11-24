@@ -8,32 +8,9 @@
 
 // GL/glew.h 需要在 GLFW 等头文件之前
 
-#define ASSERT(x) if(!(x)) __debugbreak()   // 断言, 如果为 false, 则调用 msvc 的断点  注意括号 (x)
-
-//  \ 是换行转义符, 之后不能加空格
-// #x 将 x 转换为字符串, __FILE__ 和 __LINE__ 获取该代码的文件名和行号
-// do-while 不是能够改变作用域, 而是确保在宏中的代码块可以被当做一个语句使用
-#define GLCall(x) do{\
-	    GLClearError();\
-        x;\
-        ASSERT(GLLogCall(#x, __FILE__, __LINE__));\
-	} while(0)
- 
-static void GLClearError()   // 循环获取错误, 即获取所有错误, 则清空错误了
-{
-    while (glGetError() != GL_NO_ERROR);  
-}
-
-static bool GLLogCall(const char* function, const char* file, int line)   // 循环获取错误, 每获取到错误, 就输出错误码, 获取错误过程遵循先入先出原则, 即先发生的错误先获取
-{
-    while (GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL Error] (" << std::hex << error << std::dec << "): ";   // 由于错误码是 16 进制, 通过 hex 输出 16 进制数, 使用后切换为 10 进制
-        std::cout << function << " " << file << ":" << line << std::endl;
-        return false;     // 如果有错误, 则返回 false
-    }
-    return true;
-}
+#include "Renderer.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 
 struct ShaderCode
 {
@@ -154,9 +131,9 @@ int main(void)
     // 当有一个有效的 OpenGL 上下文之后，可以输出版本
     // 4.6.14756 Compatibility Profile Context 20.40.52 27.20.14052.10
     unsigned char* glVersion;  // 提升作用域
-    GLCall(glVersion = (unsigned char*)glGetString(GL_VERSION));   
+    GLCall(glVersion = (unsigned char*)glGetString(GL_VERSION));
     std::cout << "Status: Using GL " << glVersion << std::endl;
-    
+
     float position[] =
     {
         -0.5f, -0.5f,
@@ -171,78 +148,73 @@ int main(void)
         1, 2, 3
     };
 
-    unsigned int vao; 
+    unsigned int vao;
     GLCall(glGenVertexArrays(1, &vao)); // 创建顶点数组对象
-    GLCall(glBindVertexArray(vao)); 
-
-    unsigned int buffer;
-    GLCall(glGenBuffers(1, &buffer)); // 如果没有成功 glewInit，运行相关函数时会抛出异常
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), position, GL_STATIC_DRAW));  // 查看文档 docs.gl
-
-    GLCall(glEnableVertexAttribArray(0));
-    /**
-     * glVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)
-     * @param index, 属性的索引, 如位置在索引0，纹理在索引1，法线在索引2
-     * @param size, 该属性的 count, 每个顶点的某个属性有多少个 count, 如这里每个顶点的位置属性有 2 个
-     * @param type, 数据类型
-     * @param normalized, 只用于整数, 归一化到 [0, 1] 或 [-1, 1] (根据是否是有符号整数)
-     * @param stride, 整个顶点的字节大小
-     * @param pointer, 属性 offset 的字节大小
-     */
-    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
-
-    unsigned int ibo;
-    GLCall(glGenBuffers(1, &ibo));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
-
-    std::string filePath = "OpenGL/res/shaders/basic.shader";
-    ShaderCode source = ReadShader(filePath);
-    unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-    GLCall(glUseProgram(shader));
-
-    int location;
-    GLCall(location = glGetUniformLocation(shader, "u_Color"));
-    ASSERT(location != -1);
-    GLCall(glUniform4f(location, 0.6f, 0.2f,0.3f, 1.0f));
-
-    // 解绑顶点数组, shader, 顶点缓冲, 索引缓冲
-    GLCall(glBindVertexArray(0));
-    GLCall(glUseProgram(0));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-
-    float r = 0.6f;
-    float increment = 0.05f;
-
-    /* 循环直到关闭窗口 */
-    while (!glfwWindowShouldClose(window))
+    GLCall(glBindVertexArray(vao));
     {
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        VertexBuffer vb(position, 4 * 2 * sizeof(float));
 
-        // 只需要重新绑定 shader, 顶点数组 和 索引缓冲
+        GLCall(glEnableVertexAttribArray(0));
+        /**
+         * glVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)
+         * @param index, 属性的索引, 如位置在索引0，纹理在索引1，法线在索引2
+         * @param size, 该属性的 count, 每个顶点的某个属性有多少个 count, 如这里每个顶点的位置属性有 2 个
+         * @param type, 数据类型
+         * @param normalized, 只用于整数, 归一化到 [0, 1] 或 [-1, 1] (根据是否是有符号整数)
+         * @param stride, 整个顶点的字节大小
+         * @param pointer, 属性 offset 的字节大小
+         */
+        GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+
+        IndexBuffer ib(indices, 6);
+
+        std::string filePath = "OpenGL/res/shaders/basic.shader";
+        ShaderCode source = ReadShader(filePath);
+        unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
         GLCall(glUseProgram(shader));
-        GLCall(glUniform4f(location, r, 0.2f, 0.3f, 1.0f));
 
-        GLCall(glBindVertexArray(vao));
-        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-        
-        //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
-        if (r > 1.0f)
-            increment = -0.05f;
-        if (r < 0.0f)
-            increment = 0.05f;
-        r += increment;
+        int location;
+        GLCall(location = glGetUniformLocation(shader, "u_Color"));
+        ASSERT(location != -1);
+        GLCall(glUniform4f(location, 0.6f, 0.2f, 0.3f, 1.0f));
 
-        /* 交换前后缓冲区 */
-        glfwSwapBuffers(window);
+        // 解绑顶点数组, shader, 顶点缓冲, 索引缓冲
+        GLCall(glBindVertexArray(0));
+        GLCall(glUseProgram(0));
+        vb.Unbind();
+        ib.Unbind();
 
-        /* 处理轮询事件 */
-        glfwPollEvents();
+        float r = 0.6f;
+        float increment = 0.05f;
+
+        /* 循环直到关闭窗口 */
+        while (!glfwWindowShouldClose(window))
+        {
+            GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+            // 只需要重新绑定 shader, 顶点数组 和 索引缓冲
+            GLCall(glUseProgram(shader));
+            GLCall(glUniform4f(location, r, 0.2f, 0.3f, 1.0f));
+
+            GLCall(glBindVertexArray(vao));
+            ib.Bind();
+
+            //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
+            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
+            if (r > 1.0f)
+                increment = -0.05f;
+            if (r < 0.0f)
+                increment = 0.05f;
+            r += increment;
+
+            /* 交换前后缓冲区 */
+            glfwSwapBuffers(window);
+
+            /* 处理轮询事件 */
+            glfwPollEvents();
+        }
+        GLCall(glDeleteProgram(shader));
     }
-    GLCall(glDeleteProgram(shader));
     // 释放与 GLFW 相关的资源，并确保正确地关闭和清理 GLFW 库的状态
     glfwTerminate();
     return 0;
