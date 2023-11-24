@@ -49,6 +49,7 @@ public:
 	}
 
 	inline VertexLayoutElement GetElement(unsigned int index) const { return m_Elements[index]; }
+	inline std::vector<VertexLayoutElement> GetElements() const { return m_Elements; }
 	inline unsigned int GetCount() const { return m_Count; }
 	inline int GetStride() const { return m_Stride; }
 	inline int GetOffset(int i) const { return m_Offset[i]; }
