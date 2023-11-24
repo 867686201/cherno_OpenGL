@@ -2,7 +2,7 @@
 
 #include "Renderer.h"
 
-VertexArray::VertexArray(VertexBuffer vb, VertexBufferLayout layout)
+VertexArray::VertexArray(VertexBuffer& vb, VertexBufferLayout& layout)
 {
 	GLCall(glGenVertexArrays(1, &m_RendererID));
 	GLCall(glBindVertexArray(m_RendererID));

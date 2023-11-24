@@ -6,7 +6,7 @@
 class VertexArray
 {
 public:
-	VertexArray(VertexBuffer vb, VertexBufferLayout layout);
+	VertexArray(VertexBuffer& vb, VertexBufferLayout& layout);
 	~VertexArray();
 
 	void Bind();
