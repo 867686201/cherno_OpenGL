@@ -1,6 +1,6 @@
 #include "VertexArray.h"
 
-#include "Renderer.h"
+#include "GLError.h"
 
 VertexArray::VertexArray()
 {

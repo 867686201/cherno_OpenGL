@@ -8,7 +8,7 @@
 
 // GL/glew.h 需要在 GLFW 等头文件之前
 
-#include "Renderer.h"
+#include "GLError.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"

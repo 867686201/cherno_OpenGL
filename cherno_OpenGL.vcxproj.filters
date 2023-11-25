@@ -18,7 +18,7 @@
     <ClCompile Include="OpenGL\src\Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGL\src\Renderer.cpp">
+    <ClCompile Include="OpenGL\src\GLError.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="OpenGL\src\VertexBuffer.cpp">
@@ -35,7 +35,7 @@
     <None Include="OpenGL\res\shaders\basic.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenGL\src\Renderer.h">
+    <ClInclude Include="OpenGL\src\GLError.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL\src\VertexBuffer.h">

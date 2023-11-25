@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "GLError.h"
 
 #include <iostream>
 
