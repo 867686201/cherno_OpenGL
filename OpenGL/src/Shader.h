@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <unordered_map>
 
 struct ShaderCode
 {
@@ -28,4 +29,5 @@ private:
 
 	unsigned int m_RendererID;
 	std::string m_Filepath;
+	std::unordered_map<std::string, int> m_UniformCache;
 };
