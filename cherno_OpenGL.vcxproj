@@ -152,6 +152,7 @@
     <ClCompile Include="OpenGL\src\GLError.cpp" />
     <ClCompile Include="OpenGL\src\VertexArray.cpp" />
     <ClCompile Include="OpenGL\src\VertexBuffer.cpp" />
+    <ClCompile Include="OpenGL\src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />
@@ -162,6 +163,7 @@
     <ClInclude Include="OpenGL\src\VertexArray.h" />
     <ClInclude Include="OpenGL\src\VertexBuffer.h" />
     <ClInclude Include="OpenGL\src\VertexBufferLayout.h" />
+    <ClInclude Include="OpenGL\src\Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
