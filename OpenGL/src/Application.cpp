@@ -12,7 +12,7 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
-
+#include "Renderer.h"
 
 int main(void)
 {
@@ -91,10 +91,12 @@ int main(void)
         float r = 0.6f;
         float increment = 0.05f;
 
+        Renderer renderer;
+
         /* 循环直到关闭窗口 */
         while (!glfwWindowShouldClose(window))
         {
-            GLCall(glClear(GL_COLOR_BUFFER_BIT));
+            renderer.Clear();
 
             // 只需要重新绑定 shader, 顶点数组 和 索引缓冲
             shader.Bind();
@@ -102,8 +104,8 @@ int main(void)
             va.Bind();
             ib.Bind();
 
-            //glDrawArrays(GL_TRIANGLES, 0, 3);   // 片元类型、顶点数组的起始索引、绘制多少个顶点
-            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // 片元类型、索引个数、索引类型、索引缓冲区指针, 绑定了就不需要指定了
+            renderer.Draw(va, ib, shader);
+
             if (r > 1.0f)
                 increment = -0.05f;
             if (r < 0.0f)
