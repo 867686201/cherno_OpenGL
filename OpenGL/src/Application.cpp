@@ -14,6 +14,8 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 int main(void)
 {
@@ -84,10 +86,13 @@ int main(void)
         Renderer renderer;
         Texture texture("OpenGL/res/textures/ChernoLogo.png");
         Shader shader("OpenGL/res/shaders/basic.shader");
+        
+        glm::mat4 proj = glm::ortho(-2.0, 2.0, -1.5, 1.5, -1.0, 1.0);
 
         shader.Bind();
         texture.Bind();
         shader.SetUniform1i("u_Texture", texture.GetSlot());
+        shader.SetUniformMat4fv("u_MVP", proj);
 
         /* 循环直到关闭窗口 */
         while (!glfwWindowShouldClose(window))

@@ -6,6 +6,8 @@
 #include "GLError.h"
 
 
+
+
 Shader::Shader(const std::string& filepath)
 	: m_RendererID(0), m_Filepath(filepath)
 {
@@ -129,4 +131,9 @@ void Shader::SetUniform4f(const std::string& name, float v1, float v2, float v3,
 void Shader::SetUniform1i(const std::string& name, int value)
 {
     GLCall(glUniform1i(GetUniformLocation(name), value));
+}
+
+void Shader::SetUniformMat4fv(const std::string& name, glm::mat4& mat)
+{
+    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]));
 }
