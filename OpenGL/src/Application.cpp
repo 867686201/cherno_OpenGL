@@ -13,6 +13,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Renderer.h"
+#include "Texture.h"
 
 int main(void)
 {
@@ -55,10 +56,10 @@ int main(void)
 
     float position[] =
     {
-        -0.5f, -0.5f,
-        -0.5f,  0.5f,
-         0.5f, -0.5f,
-         0.5f,  0.5f
+        -0.5f, -0.5f, 0.0f, 0.0f,
+        -0.5f,  0.5f, 0.0f, 1.0f,
+         0.5f, -0.5f, 1.0f, 0.0f,
+         0.5f,  0.5f, 1.0f, 1.0f
     };
 
     unsigned int indices[]
@@ -67,31 +68,26 @@ int main(void)
         1, 2, 3
     };
     {
+        GLCall(glEnable(GL_BLEND));
+        GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
         VertexArray va;
-        VertexBuffer vb(position, 4 * 2 * sizeof(float));
+        VertexBuffer vb(position, 4 * 4 * sizeof(float));
 
         VertexBufferLayout layout;
+        layout.Push<float>(2);
         layout.Push<float>(2);
         va.AddBuffer(vb, layout);
 
         IndexBuffer ib(indices, 6);
 
+        Renderer renderer;
+        Texture texture("OpenGL/res/textures/ChernoLogo.png");
         Shader shader("OpenGL/res/shaders/basic.shader");
 
         shader.Bind();
-
-        shader.SetUniform4f("u_Color", 0.6f, 0.2f, 0.3f, 1.0f);
-
-        // 解绑顶点数组, shader, 顶点缓冲, 索引缓冲
-        va.Unbind();
-        shader.Unbind();
-        vb.Unbind();
-        ib.Unbind();
-
-        float r = 0.6f;
-        float increment = 0.05f;
-
-        Renderer renderer;
+        texture.Bind();
+        shader.SetUniform1i("u_Texture", texture.GetSlot());
 
         /* 循环直到关闭窗口 */
         while (!glfwWindowShouldClose(window))
@@ -100,17 +96,10 @@ int main(void)
 
             // 只需要重新绑定 shader, 顶点数组 和 索引缓冲
             shader.Bind();
-            shader.SetUniform4f("u_Color", r, 0.2f, 0.3f, 1.0f);
             va.Bind();
             ib.Bind();
-
+            texture.Bind();
             renderer.Draw(va, ib, shader);
-
-            if (r > 1.0f)
-                increment = -0.05f;
-            if (r < 0.0f)
-                increment = 0.05f;
-            r += increment;
 
             /* 交换前后缓冲区 */
             glfwSwapBuffers(window);

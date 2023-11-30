@@ -20,7 +20,7 @@ public:
 	void Unbind() const;
 
 	void SetUniform4f(const std::string& name, float v1, float v2, float v3, float v4);
-
+	void SetUniform1i(const std::string& name, int value);
 private:
 	ShaderCode ReadShader(const std::string& filePath);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
