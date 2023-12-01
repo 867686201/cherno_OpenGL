@@ -4,9 +4,6 @@
 #include <iostream>
 #include <string>
 
-
-// GL/glew.h 需要在 GLFW 等头文件之前
-
 #include "GLError.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
@@ -63,11 +60,12 @@ int main(void)
         ImGui_ImplOpenGL3_Init(glsl_version);
 
         test::Test* currentTest = nullptr;
-        test::TestMenu testMenu(currentTest);
+        test::TestMenu* testMenu = new test::TestMenu(currentTest);
+        currentTest = testMenu;
 
         Renderer renderer;
 
-        testMenu.RegisterTest<test::TestClearColor>("clear color");
+        testMenu->RegisterTest<test::TestClearColor>("clear color");
 
         while (!glfwWindowShouldClose(window))
         {
@@ -78,21 +76,27 @@ int main(void)
             ImGui::NewFrame();
 
             {
-                testMenu.OnImGuiRender();
                 if (currentTest)
                 {
                     currentTest->OnUpdate(0);
                     currentTest->OnRender();
+                    if (currentTest != testMenu && ImGui::Button("-<"))
+                    {
+                        delete currentTest;
+                        currentTest = testMenu;
+                    }
                     currentTest->OnImGuiRender();
                 }
             }
-
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
+        delete testMenu;
+        if (currentTest != testMenu)
+            delete currentTest;
     }
 
     ImGui_ImplOpenGL3_Shutdown();
