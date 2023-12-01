@@ -62,19 +62,29 @@ int main(void)
         const char* glsl_version = "#version 330";
         ImGui_ImplOpenGL3_Init(glsl_version);
 
-        test::TestClearColor test;
+        test::Test* currentTest = nullptr;
+        test::TestMenu testMenu(currentTest);
+
+        Renderer renderer;
+
+        testMenu.RegisterTest<test::TestClearColor>("clear color");
 
         while (!glfwWindowShouldClose(window))
         {
-            test.OnUpdate(0.0f);
-            test.OnRender();
+            renderer.Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
             {
-                test.OnImGuiRender();
+                testMenu.OnImGuiRender();
+                if (currentTest)
+                {
+                    currentTest->OnUpdate(0);
+                    currentTest->OnRender();
+                    currentTest->OnImGuiRender();
+                }
             }
 
             ImGui::Render();
