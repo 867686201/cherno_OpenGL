@@ -92,12 +92,13 @@ int main(void)
         Texture texture("OpenGL/res/textures/ChernoLogo.png");
         Shader shader("OpenGL/res/shaders/basic.shader");
         
-        glm::vec3 translation(100.0f, 100.0f, 0.0f);
+        glm::vec3 translationA(100.0f, 100.0f, 0.0f);
+        glm::vec3 translationB(200.0f, 100.0f, 0.0f);
         glm::vec3 eye(0.0f, 0.0f, 400.0f);
         glm::vec3 center(0.0f, 0.0f, 0.0f);
         glm::vec3 up(0.0f, 1.0f, 0.0f);
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
         glm::mat4 view = glm::lookAt(eye, center, up);
         glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f);
 
@@ -126,27 +127,33 @@ int main(void)
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
-            glm::mat4 view = glm::lookAt(eye, center, up);
-            glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f);
+            {
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+                glm::mat4 view = glm::lookAt(eye, center, up);
+                glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f);
+                glm::mat4 mvp = proj * view * model;
+                shader.Bind();
+                shader.SetUniformMat4fv("u_MVP", mvp);
+                renderer.Draw(va, ib, shader);
+            }
 
-            glm::mat4 mvp = proj * view * model;
-
-            // 只需要重新绑定 shader, 顶点数组 和 索引缓冲
-            shader.Bind();
-            shader.SetUniformMat4fv("u_MVP", mvp);
-            va.Bind();
-            ib.Bind();
-            texture.Bind();
-            renderer.Draw(va, ib, shader);
-
+            {
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
+                glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 400.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f);
+                glm::mat4 mvp = proj * view * model;
+                shader.Bind();
+                shader.SetUniformMat4fv("u_MVP", mvp);
+                renderer.Draw(va, ib, shader);
+            }
 
             {
                 ImGui::Begin("ImGui");
-                ImGui::SliderFloat3("translation", &translation.x, -200.0f, 200.0f);
+                ImGui::SliderFloat3("translationA", &translationA.x, -200.0f, 800.0f);
                 ImGui::SliderFloat3("eye", &eye.x, -500.0f, 500.0f);
                 ImGui::SliderFloat3("center", &center.x, -500.0f, 500.0f);
                 ImGui::SliderFloat3("up", &up.x, -1.0f, 1.0f);
+                ImGui::SliderFloat3("translationB", &translationB.x, -200.0f, 800.0f);
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
                 ImGui::End();
             }
