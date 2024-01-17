@@ -19,6 +19,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "tests/TestClearColor.h"
+#include "tests/TestTexture2D.h"
 
 int main(void)
 {
@@ -66,6 +67,7 @@ int main(void)
         Renderer renderer;
 
         testMenu->RegisterTest<test::TestClearColor>("clear color");
+        testMenu->RegisterTest<test::TestTexture2D>("texture 2D");
 
         while (!glfwWindowShouldClose(window))
         {

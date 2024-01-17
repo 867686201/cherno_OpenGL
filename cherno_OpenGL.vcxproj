@@ -155,6 +155,7 @@
     <ClCompile Include="OpenGL\src\Renderer.cpp" />
     <ClCompile Include="OpenGL\src\tests\Test.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestClearColor.cpp" />
+    <ClCompile Include="OpenGL\src\tests\TestTexture2D.cpp" />
     <ClCompile Include="OpenGL\src\Texture.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\glm\detail\glm.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui.cpp" />
@@ -314,6 +315,7 @@
     <ClInclude Include="OpenGL\src\Renderer.h" />
     <ClInclude Include="OpenGL\src\tests\Test.h" />
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h" />
+    <ClInclude Include="OpenGL\src\tests\TestTexture2D.h" />
     <ClInclude Include="OpenGL\src\Texture.h" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\common.hpp" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\detail\compute_common.hpp" />
