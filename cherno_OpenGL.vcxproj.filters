@@ -72,6 +72,9 @@
     <ClCompile Include="OpenGL\src\tests\Test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL\src\tests\TestTransform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />
@@ -483,6 +486,7 @@
     <None Include="OpenGL\src\thirdParty\glm\gtx\wrap.inl">
       <Filter>头文件</Filter>
     </None>
+    <None Include="OpenGL\res\shaders\axis.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenGL\src\GLError.h">
@@ -1389,6 +1393,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\myHelpFunction\transform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\tests\TestTransform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\myHelpFunction\generate.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

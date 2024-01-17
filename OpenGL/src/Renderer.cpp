@@ -30,3 +30,12 @@ void Renderer::Draw(VertexArray& va, IndexBuffer& ib, Shader& shader)
 	shader.Bind();
 	GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr)); 
 }
+
+void Renderer::DrawLine(VertexArray& va, IndexBuffer& ib, Shader& shader)
+{
+	va.Bind();
+	ib.Bind();
+	shader.Bind();
+	GLCall(glDrawElements(GL_LINES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
+}
+

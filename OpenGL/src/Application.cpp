@@ -19,6 +19,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "tests/TestClearColor.h"
+#include "tests/TestTransform.h"
 
 int main(void)
 {
@@ -31,7 +32,7 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(960, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 640, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -50,7 +51,8 @@ int main(void)
     {
         GLCall(glEnable(GL_BLEND));
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-       
+        GLCall(glDisable(GL_CULL_FACE));
+
 
         ImGui::CreateContext();
         ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -65,6 +67,7 @@ int main(void)
 
         Renderer renderer;
 
+        testMenu->RegisterTest<test::TestTransform>("transform");
         testMenu->RegisterTest<test::TestClearColor>("clear color");
 
         while (!glfwWindowShouldClose(window))

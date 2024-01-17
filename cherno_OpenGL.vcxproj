@@ -155,6 +155,7 @@
     <ClCompile Include="OpenGL\src\Renderer.cpp" />
     <ClCompile Include="OpenGL\src\tests\Test.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestClearColor.cpp" />
+    <ClCompile Include="OpenGL\src\tests\TestTransform.cpp" />
     <ClCompile Include="OpenGL\src\Texture.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\glm\detail\glm.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="OpenGL\src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="OpenGL\res\shaders\axis.shader" />
     <None Include="OpenGL\res\shaders\basic.shader" />
     <None Include="OpenGL\src\thirdParty\glm\detail\func_common.inl" />
     <None Include="OpenGL\src\thirdParty\glm\detail\func_common_simd.inl" />
@@ -311,9 +313,11 @@
   <ItemGroup>
     <ClInclude Include="OpenGL\src\IndexBuffer.h" />
     <ClInclude Include="OpenGL\src\GLError.h" />
+    <ClInclude Include="OpenGL\src\myHelpFunction\generate.h" />
     <ClInclude Include="OpenGL\src\Renderer.h" />
     <ClInclude Include="OpenGL\src\tests\Test.h" />
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h" />
+    <ClInclude Include="OpenGL\src\tests\TestTransform.h" />
     <ClInclude Include="OpenGL\src\Texture.h" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\common.hpp" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\detail\compute_common.hpp" />
@@ -607,6 +611,7 @@
     <ClInclude Include="OpenGL\src\thirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="OpenGL\src\thirdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="OpenGL\src\thirdParty\stb_image\stb_image.h" />
+    <ClInclude Include="OpenGL\src\myHelpFunction\transform.h" />
     <ClInclude Include="OpenGL\src\VertexArray.h" />
     <ClInclude Include="OpenGL\src\VertexBuffer.h" />
     <ClInclude Include="OpenGL\src\VertexBufferLayout.h" />
