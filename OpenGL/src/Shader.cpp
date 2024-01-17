@@ -107,7 +107,7 @@ void Shader::Unbind() const
     GLCall(glUseProgram(0));
 }
 
-int Shader::GetUniformLocation(const std::string& name)
+int Shader::GetUniformLocation(const std::string& name) const
 {
     if (m_UniformCache.find(name) != m_UniformCache.end())
     {

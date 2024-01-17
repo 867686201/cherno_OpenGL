@@ -20,7 +20,6 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 	private:
-		Renderer m_Renderer;
 
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VBO;

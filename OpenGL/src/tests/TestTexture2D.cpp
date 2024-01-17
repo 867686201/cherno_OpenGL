@@ -54,8 +54,8 @@ namespace test
 	}
 	void TestTexture2D::OnRender()
 	{
-		m_Renderer.Clear(0.0f, 0.0f, 0.0f, 0.0f);
 		Renderer renderer;
+		renderer.Clear(0.0f, 0.0f, 0.0f, 0.0f);
 
 		m_Model = glm::translate(glm::mat4(1.0f), m_TranslationA);
 		m_View = glm::lookAt(m_Eye, m_Center, m_Up);
