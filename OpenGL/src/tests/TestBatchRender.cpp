@@ -14,15 +14,15 @@ namespace test
 
 
 		float positions[] = {
-			100.0f, 100.0f,		// 正方形1
-			200.0f, 100.0f,
-			200.0f, 200.0f,
-			100.0f, 200.0f,
+			100.0f, 100.0f,	0.18f, 0.6f, 0.96f, 1.0f,	// 正方形1
+			200.0f, 100.0f,	0.18f, 0.6f, 0.96f, 1.0f,
+			200.0f, 200.0f,	0.18f, 0.6f, 0.96f, 1.0f,
+			100.0f, 200.0f,	0.18f, 0.6f, 0.96f, 1.0f,
 
-			300.0f, 100.0f,		// 正方形2
-			400.0f, 100.0f,
-			400.0f, 200.0f,
-			300.0f, 200.0f,
+			300.0f, 100.0f, 1.0f, 0.93f, 0.24f, 1.0f,		// 正方形2
+			400.0f, 100.0f,	1.0f, 0.93f, 0.24f, 1.0f,
+			400.0f, 200.0f,	1.0f, 0.93f, 0.24f, 1.0f,
+			300.0f, 200.0f,	1.0f, 0.93f, 0.24f, 1.0f
 
 		};
 
@@ -31,10 +31,11 @@ namespace test
 			4, 5, 6, 6, 7, 4
 		};
 
-		m_VBO = std::make_unique<VertexBuffer>(positions, 2 * 4 * 2 * sizeof(float));
+		m_VBO = std::make_unique<VertexBuffer>(positions, 6 * 4 * 2 * sizeof(float));
 
 		VertexBufferLayout layout;
 		layout.Push<float>(2);
+		layout.Push<float>(4);
 		m_VAO = std::make_unique<VertexArray>();
 		m_VAO->AddBuffer(*m_VBO, layout);
 
