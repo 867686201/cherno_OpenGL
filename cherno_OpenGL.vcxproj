@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -154,6 +154,7 @@
     <ClCompile Include="OpenGL\src\GLError.cpp" />
     <ClCompile Include="OpenGL\src\Renderer.cpp" />
     <ClCompile Include="OpenGL\src\tests\Test.cpp" />
+    <ClCompile Include="OpenGL\src\tests\TestBatchRender.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestClearColor.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestTexture2D.cpp" />
     <ClCompile Include="OpenGL\src\Texture.cpp" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />
+    <None Include="OpenGL\res\shaders\batch.shader" />
     <None Include="OpenGL\src\thirdParty\glm\detail\func_common.inl" />
     <None Include="OpenGL\src\thirdParty\glm\detail\func_common_simd.inl" />
     <None Include="OpenGL\src\thirdParty\glm\detail\func_exponential.inl" />
@@ -314,6 +316,7 @@
     <ClInclude Include="OpenGL\src\GLError.h" />
     <ClInclude Include="OpenGL\src\Renderer.h" />
     <ClInclude Include="OpenGL\src\tests\Test.h" />
+    <ClInclude Include="OpenGL\src\tests\TestBatchRender.h" />
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h" />
     <ClInclude Include="OpenGL\src\tests\TestTexture2D.h" />
     <ClInclude Include="OpenGL\src\Texture.h" />

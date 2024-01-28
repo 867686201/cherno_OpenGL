@@ -37,6 +37,12 @@ struct VertexLayoutElement
 	}
 };
 
+namespace detail
+{
+	template<typename>
+	constexpr bool always_false = false;
+}
+
 class VertexBufferLayout
 {
 
@@ -47,7 +53,9 @@ public:
 	template<typename T>
 	void Push(unsigned int count)
 	{
-		static_assert(false);  // 在编译时, 如果输入了没有在下方特例化的类型, 则会报错
+		//__debugbreak();			 // 运行时检查
+		//static_assert(false);  // 在编译时, 如果输入了没有在下方特例化的类型, 则会报错		
+		static_assert(detail::always_false<T>, "Type not supported"); // 在 vs2022 中任何情况都会上面那种方式都会报错, 修改为当前代码
 	}
 	template<>
 	void Push<float>(unsigned int count)
