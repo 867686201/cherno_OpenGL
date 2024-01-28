@@ -13,16 +13,17 @@ namespace test
 	{
 
 
-		float positions[] = {
-			100.0f, 100.0f,	0.18f, 0.6f, 0.96f, 1.0f,	// 正方形1
-			200.0f, 100.0f,	0.18f, 0.6f, 0.96f, 1.0f,
-			200.0f, 200.0f,	0.18f, 0.6f, 0.96f, 1.0f,
-			100.0f, 200.0f,	0.18f, 0.6f, 0.96f, 1.0f,
+		float vertices[] = {
+			// vec2 位置     vec4 颜色                 vec2 uv坐标 vec1 纹理插槽
+			100.0f, 100.0f,	0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,	    // 正方形1
+			200.0f, 100.0f,	0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,
+			200.0f, 200.0f,	0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,
+			100.0f, 200.0f,	0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,
 
-			300.0f, 100.0f, 1.0f, 0.93f, 0.24f, 1.0f,		// 正方形2
-			400.0f, 100.0f,	1.0f, 0.93f, 0.24f, 1.0f,
-			400.0f, 200.0f,	1.0f, 0.93f, 0.24f, 1.0f,
-			300.0f, 200.0f,	1.0f, 0.93f, 0.24f, 1.0f
+			300.0f, 100.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 0.0f, 1.0f,		// 正方形2
+			400.0f, 100.0f,	1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 0.0f, 1.0f,
+			400.0f, 200.0f,	1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f, 1.0f,
+			300.0f, 200.0f,	1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f, 1.0f,
 
 		};
 
@@ -31,11 +32,16 @@ namespace test
 			4, 5, 6, 6, 7, 4
 		};
 
-		m_VBO = std::make_unique<VertexBuffer>(positions, 6 * 4 * 2 * sizeof(float));
+		GLCall(glEnable(GL_BLEND));
+		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+		m_VBO = std::make_unique<VertexBuffer>(vertices, 9 * 4 * 2 * sizeof(float));
 
 		VertexBufferLayout layout;
-		layout.Push<float>(2);
-		layout.Push<float>(4);
+		layout.Push<float>(2);  // 位置
+		layout.Push<float>(4);  // 颜色
+		layout.Push<float>(2);	// uv坐标
+		layout.Push<float>(1);	// 纹理插槽
 		m_VAO = std::make_unique<VertexArray>();
 		m_VAO->AddBuffer(*m_VBO, layout);
 
@@ -43,6 +49,14 @@ namespace test
 
 		m_Shader = std::make_unique<Shader>("OpenGL/res/shaders/batch.shader");
 		m_Shader->Bind();
+		m_Texture[0] = std::make_unique<Texture>("OpenGL/res/textures/test.png");
+		m_Texture[1] = std::make_unique<Texture>("OpenGL/res/textures/ChernoLogo.png");
+		for (size_t i = 0; i < 2; i++)
+		{
+			m_Texture[i]->Bind(i);
+		}
+		int samplers[2] = { 0, 1 };
+		m_Shader->SetUniform1iv("u_Textures", 2, samplers);
 
 	}
 	TestBatchRender::~TestBatchRender()
