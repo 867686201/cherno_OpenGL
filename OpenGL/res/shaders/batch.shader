@@ -14,8 +14,8 @@ out float v_slot;
 
 void main()
 {
-	v_uvCoord = uvCoord;
-	v_color = color;
+	v_uvCoord = a_uvCoord;
+	v_color = a_color;
 	v_slot = a_slot;
 	gl_Position = u_MVP * vec4(position, 1.0f, 1.0f);
 };
