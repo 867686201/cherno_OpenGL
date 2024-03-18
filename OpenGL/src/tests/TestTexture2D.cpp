@@ -4,16 +4,17 @@
 #include "GLError.h"
 #include "imgui/imgui.h"
 
+#include <iostream>
+
 namespace test
 {
 	TestTexture2D::TestTexture2D()
 		: m_TranslationA(100.0f, 100.0f, 0.0f), m_TranslationB(200.0f, 100.0f, 0.0f),
 		m_Eye(0.0f, 0.0f, 400.0f), m_Center(0.0f, 0.0f, 0.0f), m_Up(0.0f, 1.0f, 0.0f),
-		m_Model(glm::translate(glm::mat4(1.0f), m_TranslationA)),
-		m_View(glm::lookAt(m_Eye, m_Center, m_Up)), 
-		m_Proj(glm::ortho(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f))
+		m_camera(CameraFactory::createOrthoCamera(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f)),
+		m_Model(glm::translate(glm::mat4(1.0f), m_TranslationA))
 	{
-
+		m_camera->updateLookAt(m_Eye, m_Center, m_Up);
 
 		float positions[] =
 		{
@@ -58,13 +59,13 @@ namespace test
 		renderer.Clear(0.0f, 0.0f, 0.0f, 0.0f);
 
 		m_Model = glm::translate(glm::mat4(1.0f), m_TranslationA);
-		m_View = glm::lookAt(m_Eye, m_Center, m_Up);
-		glm::mat4 mvp = m_Proj * m_View * m_Model;
+		m_camera->updateLookAt(m_Eye, m_Center, m_Up);
+		glm::mat4 mvp = m_camera->getProjViewMatrix() * m_Model;
 		m_Shader->SetUniformMat4fv("u_MVP", mvp);
 		renderer.Draw(*m_VAO, *m_IBO, *m_Shader);
 
 		m_Model = glm::translate(glm::mat4(1.0f), m_TranslationB);
-		mvp = m_Proj * m_View * m_Model;
+		mvp = m_camera->getProjViewMatrix() * m_Model;
 		m_Shader->SetUniformMat4fv("u_MVP", mvp);
 		renderer.Draw(*m_VAO, *m_IBO, *m_Shader);
 

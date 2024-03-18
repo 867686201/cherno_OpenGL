@@ -157,6 +157,7 @@
     <ClCompile Include="OpenGL\src\tests\TestBatchRender.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestClearColor.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestTexture2D.cpp" />
+    <ClCompile Include="OpenGL\src\tests\TestTexture3D.cpp" />
     <ClCompile Include="OpenGL\src\Texture.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\glm\detail\glm.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\stb_image\stb_image.cpp" />
+    <ClCompile Include="OpenGL\src\utils\PerspectCamera.h" />
     <ClCompile Include="OpenGL\src\VertexArray.cpp" />
     <ClCompile Include="OpenGL\src\VertexBuffer.cpp" />
     <ClCompile Include="OpenGL\src\Shader.cpp" />
@@ -319,6 +321,7 @@
     <ClInclude Include="OpenGL\src\tests\TestBatchRender.h" />
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h" />
     <ClInclude Include="OpenGL\src\tests\TestTexture2D.h" />
+    <ClInclude Include="OpenGL\src\tests\TestTexture3D.h" />
     <ClInclude Include="OpenGL\src\Texture.h" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\common.hpp" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\detail\compute_common.hpp" />
@@ -612,6 +615,11 @@
     <ClInclude Include="OpenGL\src\thirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="OpenGL\src\thirdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="OpenGL\src\thirdParty\stb_image\stb_image.h" />
+    <ClInclude Include="OpenGL\src\utils\Camera.h" />
+    <ClInclude Include="OpenGL\src\utils\CameraFactory.h" />
+    <ClInclude Include="OpenGL\src\utils\GenericCamera.h" />
+    <ClInclude Include="OpenGL\src\utils\OrthoCamera.h" />
+    <ClInclude Include="OpenGL\src\utils\Transform.h" />
     <ClInclude Include="OpenGL\src\VertexArray.h" />
     <ClInclude Include="OpenGL\src\VertexBuffer.h" />
     <ClInclude Include="OpenGL\src\VertexBufferLayout.h" />

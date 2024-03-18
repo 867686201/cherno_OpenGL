@@ -78,6 +78,12 @@
     <ClCompile Include="OpenGL\src\tests\TestBatchRender.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL\src\utils\PerspectCamera.h">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\src\tests\TestTexture3D.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />
@@ -1402,6 +1408,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL\src\tests\TestBatchRender.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\utils\Transform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\utils\Camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\utils\OrthoCamera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\utils\CameraFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\tests\TestTexture3D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\utils\GenericCamera.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
