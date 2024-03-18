@@ -14,9 +14,7 @@ public:
 		
 		updateProjMatrix();
 	}
-	void updatePerspectiveParam(float fov, float aspect, float near, float far) override
-	{
-	}
+
 	void updateOrthoParam(float left, float right, float bottom, float top, float zNear = -1.0f, float zFar = 1.0f) override
 	{
 		m_left = left;

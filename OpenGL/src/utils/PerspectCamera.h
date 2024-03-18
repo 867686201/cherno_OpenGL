@@ -17,10 +17,7 @@ public:
 	{
 		m_projMatrix = glm::perspective(glm::radians(m_fov), m_aspect, m_zNear, m_zFar); // 角度转为弧度
 	}
-	void updateOrthoParam(float left, float right, float bottom, float top, float zNear = -1.0f, float zFar = 1.0f) override
-	{
 
-	}
 	void updatePerspectiveParam(float fov, float aspect, float near, float far) override
 	{
 		m_fov = fov;
