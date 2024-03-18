@@ -97,11 +97,7 @@ namespace test
 
 		m_Model = glm::translate(glm::mat4(1.0f), m_TranslationA);
 		m_Camera->updateLookAt(m_Eye, m_Center, m_Up);
-		PerspectCamera* tempCamera = dynamic_cast<PerspectCamera*>(m_Camera.get());
-		if (tempCamera)
-		{
-			tempCamera->updatePerspectiveParam(m_Fov, m_Aspect, m_Near, m_Far);
-		}
+		m_Camera->updatePerspectiveParam(m_Fov, m_Aspect, m_Near, m_Far);
 		glm::mat4 mvp = m_Camera->getProjViewMatrix() * m_Model;
 		m_Shader->SetUniformMat4fv("u_MVP", mvp);
 		renderer.Draw(*m_VAO, *m_IBO, *m_Shader);

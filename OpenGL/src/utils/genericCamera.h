@@ -1,8 +1,11 @@
 #pragma once
+
+#include "Camera.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class GenericCamera
+class GenericCamera : public Camera
 {
 public:
 	GenericCamera(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
@@ -10,22 +13,23 @@ public:
 		m_projMatrix(glm::mat4()), m_viewMatrix(glm::lookAt(m_eye, m_center, m_up))
 	{
 	}
-	virtual ~GenericCamera() {}
+	virtual ~GenericCamera() = default;
 
-	const glm::mat4& getProjMatrix() const { return m_projMatrix; }
-	const glm::mat4& getViewMatrix() const { return m_viewMatrix; }
-	const glm::mat4& getProjViewMatrix() const { return m_viewProjMatrix; }
+	const glm::mat4& getProjMatrix() const override { return m_projMatrix; }
+	const glm::mat4& getViewMatrix() const override { return m_viewMatrix; }
+	const glm::mat4& getProjViewMatrix() const override { return m_viewProjMatrix; }
 
-	void updateEye(const glm::vec3& eye) { m_eye = eye; updateViewMatrix(); };
-	void updateCenter(const glm::vec3& center) { m_center = center; updateViewMatrix(); };
-	void updateUp(const glm::vec3& up) { m_up = up; updateViewMatrix(); };
-	void updateLookAt(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up)
+	void updateEye(const glm::vec3& eye) override { m_eye = eye; updateViewMatrix(); };
+	void updateCenter(const glm::vec3& center) override { m_center = center; updateViewMatrix(); };
+	void updateUp(const glm::vec3& up) override { m_up = up; updateViewMatrix(); };
+	void updateLookAt(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up) override
 	{
 		m_eye = eye;
 		m_center = center;
 		m_up = up;
 		updateViewMatrix();
 	}
+
 
 
 private:
@@ -43,7 +47,7 @@ protected:
 protected:
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_projMatrix;
-	glm::mat4 m_viewProjMatrix;
+	glm::mat4 m_viewProjMatrix{};
 
 	glm::vec3 m_eye;
 	glm::vec3 m_center;

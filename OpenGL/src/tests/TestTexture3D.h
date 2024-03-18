@@ -27,7 +27,7 @@ namespace test
 		std::unique_ptr<IndexBuffer> m_IBO;
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<Texture> m_Texture;
-		std::unique_ptr<GenericCamera> m_Camera;
+		std::unique_ptr<Camera> m_Camera;
 
 
 		glm::vec3 m_TranslationA;

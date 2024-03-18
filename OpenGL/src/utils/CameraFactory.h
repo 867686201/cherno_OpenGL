@@ -10,7 +10,7 @@ enum class CameraType
 	PerspectCamera
 };
 
-using CameraPtr = std::unique_ptr<GenericCamera>;
+using CameraPtr = std::unique_ptr<Camera>;
 
 class CameraFactory
 {
