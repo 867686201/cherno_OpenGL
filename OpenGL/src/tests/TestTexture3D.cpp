@@ -9,8 +9,8 @@
 namespace test
 {
 	TestTexture3D::TestTexture3D()
-		: m_TranslationA(100.0f, 100.0f, 0.0f), m_TranslationB(200.0f, 100.0f, 0.0f),
-		m_Eye(0.0f, 0.0f, 400.0f), m_Center(0.0f, 0.0f, 0.0f), m_Up(0.0f, 1.0f, 0.0f),
+		: m_TranslationA(-100.0f, 0.0f, 0.0f), m_TranslationB( 100.0f, 0.0f, 0.0f),
+		m_Eye(0.0f, 400.0f, 800.0f), m_Center(0.0f, 0.0f, 0.0f), m_Up(0.0f, 1.0f, 0.0f),
 		m_Fov(60.0), m_Aspect(1), m_Near(-100), m_Far(300),
 		m_Camera(CameraFactory::createPerspectCamera(m_Fov, m_Aspect, m_Near, m_Far)),
 		m_Model(glm::translate(glm::mat4(1.0f), m_TranslationA))
@@ -19,35 +19,35 @@ namespace test
 
 		float positions[] = {
 			// 前面
-			100.0f, 100.0f, 200.0f,  0.0f, 0.0f,
-			200.0f, 100.0f, 200.0f,  1.0f, 0.0f,
-			200.0f, 200.0f, 200.0f,  1.0f, 1.0f,
-			100.0f, 200.0f, 200.0f,  0.0f, 1.0f,
+			-100.0f, -100.0f,  100.0f,  0.0f, 0.0f,
+			 100.0f, -100.0f,  100.0f,  1.0f, 0.0f,
+			 100.0f,  100.0f,  100.0f,  1.0f, 1.0f,
+			-100.0f,  100.0f,  100.0f,  0.0f, 1.0f,
 			// 后面
-			100.0f, 100.0f, 100.0f,  1.0f, 0.0f,
-			100.0f, 200.0f, 100.0f,  1.0f, 1.0f,
-			200.0f, 200.0f, 100.0f,  0.0f, 1.0f,
-			200.0f, 100.0f, 100.0f,  0.0f, 0.0f,
+			-100.0f, -100.0f, -100.0f,  1.0f, 0.0f,
+			-100.0f,  100.0f, -100.0f,  1.0f, 1.0f,
+			 100.0f,  100.0f, -100.0f,  0.0f, 1.0f,
+			 100.0f, -100.0f, -100.0f,  0.0f, 0.0f,
 			// 左面
-			100.0f, 100.0f, 100.0f,  0.0f, 0.0f,
-			100.0f, 100.0f, 200.0f,  1.0f, 0.0f,
-			100.0f, 200.0f, 200.0f,  1.0f, 1.0f,
-			100.0f, 200.0f, 100.0f,  0.0f, 1.0f,
+			-100.0f, -100.0f, -100.0f,  0.0f, 0.0f,
+			-100.0f, -100.0f,  100.0f,  1.0f, 0.0f,
+			-100.0f,  100.0f,  100.0f,  1.0f, 1.0f,
+			-100.0f,  100.0f, -100.0f,  0.0f, 1.0f,
 			// 右面
-			200.0f, 100.0f, 100.0f,  1.0f, 0.0f,
-			200.0f, 200.0f, 100.0f,  1.0f, 1.0f,
-			200.0f, 200.0f, 200.0f,  0.0f, 1.0f,
-			200.0f, 100.0f, 200.0f,  0.0f, 0.0f,
+			 100.0f, -100.0f, -100.0f,  1.0f, 0.0f,
+			 100.0f,  100.0f, -100.0f,  1.0f, 1.0f,
+			 100.0f,  100.0f,  100.0f,  0.0f, 1.0f,
+			 100.0f, -100.0f,  100.0f,  0.0f, 0.0f,
 			// 上面
-			100.0f, 200.0f, 100.0f,  0.0f, 1.0f,
-			100.0f, 200.0f, 200.0f,  0.0f, 0.0f,
-			200.0f, 200.0f, 200.0f,  1.0f, 0.0f,
-			200.0f, 200.0f, 100.0f,  1.0f, 1.0f,
+			-100.0f,  100.0f, -100.0f,  0.0f, 1.0f,
+			-100.0f,  100.0f,  100.0f,  0.0f, 0.0f,
+			 100.0f,  100.0f,  100.0f,  1.0f, 0.0f,
+			 100.0f,  100.0f, -100.0f,  1.0f, 1.0f,
 			// 下面
-			100.0f, 100.0f, 100.0f,  1.0f, 1.0f,
-			200.0f, 100.0f, 100.0f,  0.0f, 1.0f,
-			200.0f, 100.0f, 200.0f,  0.0f, 0.0f,
-			100.0f, 100.0f, 200.0f,  1.0f, 0.0f,
+			-100.0f, -100.0f, -100.0f,  1.0f, 1.0f,
+			 100.0f, -100.0f, -100.0f,  0.0f, 1.0f,
+			 100.0f, -100.0f,  100.0f,  0.0f, 0.0f,
+			-100.0f, -100.0f,  100.0f,  1.0f, 0.0f,
 		};
 
 
@@ -117,8 +117,8 @@ namespace test
 	{
 		ImGui::Begin("ImGui");
 		ImGui::Text("model transform");
-		ImGui::SliderFloat3("translationA", &m_TranslationA.x, -200.0f, 800.0f);
-		ImGui::SliderFloat3("translationB", &m_TranslationB.x, -200.0f, 800.0f);
+		ImGui::SliderFloat3("translationA", &m_TranslationA.x, - 100.0f, 800.0f);
+		ImGui::SliderFloat3("translationB", &m_TranslationB.x, - 100.0f, 800.0f);
 		ImGui::Text("view transform");
 		ImGui::SliderFloat3("eye", &m_Eye.x, -500.0f, 500.0f);
 		ImGui::SliderFloat3("center", &m_Center.x, -500.0f, 500.0f);

@@ -9,19 +9,19 @@
 namespace test
 {
 	TestTexture2D::TestTexture2D()
-		: m_TranslationA(100.0f, 100.0f, 0.0f), m_TranslationB(200.0f, 100.0f, 0.0f),
-		m_Eye(0.0f, 0.0f, 400.0f), m_Center(0.0f, 0.0f, 0.0f), m_Up(0.0f, 1.0f, 0.0f),
-		m_camera(CameraFactory::createOrthoCamera(0.0f, 960.0f, 0.0f, 600.0f, -1000.0f, 1000.0f)),
+		: m_TranslationA(0.0f, 0.0, 0.0f), m_TranslationB(100.0f, 0.0, 0.0f),
+		m_Eye(0.0f, 0.0f, 0.0f), m_Center(0.0f, 0.0f, -1.0f), m_Up(0.0f, 1.0f, 0.0f),
+		m_camera(CameraFactory::createOrthoCamera(-400.0f * 1.6, 400.0f * 1.6, -400.0f, 400.0f, -1000.0f, 1000.0f)),
 		m_Model(glm::translate(glm::mat4(1.0f), m_TranslationA))
 	{
 		m_camera->updateLookAt(m_Eye, m_Center, m_Up);
 
 		float positions[] =
 		{
-			100.0f, 100.0f, 0.0f, 0.0f,
-			100.0f, 200.0f, 0.0f, 1.0f,
-			200.0f, 100.0f, 1.0f, 0.0f,
-			200.0f, 200.0f, 1.0f, 1.0f
+			-100.0f, -100.0f, 0.0f, 0.0f,
+			-100.0f,  100.0f, 0.0f, 1.0f,
+			 100.0f, -100.0f, 1.0f, 0.0f,
+			 100.0f,  100.0f, 1.0f, 1.0f
 		};
 
 		unsigned int indices[]
@@ -74,11 +74,11 @@ namespace test
 	void TestTexture2D::OnImGuiRender()
 	{
 		ImGui::Begin("ImGui");
-		ImGui::SliderFloat3("translationA", &m_TranslationA.x, -200.0f, 800.0f);
+		ImGui::SliderFloat3("translationA", &m_TranslationA.x, - 100.0f, 800.0f);
 		ImGui::SliderFloat3("eye", &m_Eye.x, -500.0f, 500.0f);
 		ImGui::SliderFloat3("center", &m_Center.x, -500.0f, 500.0f);
 		ImGui::SliderFloat3("up", &m_Up.x, -1.0f, 1.0f);
-		ImGui::SliderFloat3("translationB", &m_TranslationB.x, -200.0f, 800.0f);
+		ImGui::SliderFloat3("translationB", &m_TranslationB.x, - 100.0f, 800.0f);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 	}
