@@ -30,7 +30,8 @@ public:
 		updateViewMatrix();
 	}
 
-
+	virtual void updateOrthoParam(float left, float right, float bottom, float top, float zNear, float zFar) = 0;	// 声明为纯虚函数，以明确其抽象性。
+	virtual void updatePerspectiveParam(float fov, float aspect, float near, float far) = 0;						// 声明为纯虚函数，以明确其抽象性。
 
 private:
 	void updateViewMatrix() { m_viewMatrix = glm::lookAt(m_eye, m_center, m_up); updateViewProjMatrix(); }
