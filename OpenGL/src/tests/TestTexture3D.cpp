@@ -10,8 +10,8 @@ namespace test
 {
 	TestTexture3D::TestTexture3D()
 		: m_TranslationA(-100.0f, 0.0f, 0.0f), m_TranslationB( 100.0f, 0.0f, 0.0f),
-		m_Eye(0.0f, 400.0f, 800.0f), m_Center(0.0f, 0.0f, 0.0f), m_Up(0.0f, 1.0f, 0.0f),
-		m_Fov(60.0), m_Aspect(1), m_Near(-100), m_Far(300),
+		m_Eye(400.0f, 400.0f, 800.0f), m_Center(0.0f, 0.0f, 0.0f), m_Up(0.0f, 1.0f, 0.0f),
+		m_Fov(60.0), m_Aspect(1), m_Near(0), m_Far(300),
 		m_Camera(CameraFactory::createPerspectCamera(m_Fov, m_Aspect, m_Near, m_Far)),
 		m_Model(glm::translate(glm::mat4(1.0f), m_TranslationA))
 	{

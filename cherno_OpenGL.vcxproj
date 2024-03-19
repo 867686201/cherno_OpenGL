@@ -154,6 +154,7 @@
     <ClCompile Include="OpenGL\src\GLError.cpp" />
     <ClCompile Include="OpenGL\src\Renderer.cpp" />
     <ClCompile Include="OpenGL\src\tests\Test.cpp" />
+    <ClCompile Include="OpenGL\src\tests\TestAffineTransform.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestBatchRender.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestClearColor.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestTexture2D.cpp" />
@@ -314,10 +315,12 @@
     <None Include="OpenGL\src\thirdParty\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OpenGL\res\shaders\axis.shader" />
     <ClInclude Include="OpenGL\src\IndexBuffer.h" />
     <ClInclude Include="OpenGL\src\GLError.h" />
     <ClInclude Include="OpenGL\src\Renderer.h" />
     <ClInclude Include="OpenGL\src\tests\Test.h" />
+    <ClInclude Include="OpenGL\src\tests\TestAffineTransform.h" />
     <ClInclude Include="OpenGL\src\tests\TestBatchRender.h" />
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h" />
     <ClInclude Include="OpenGL\src\tests\TestTexture2D.h" />

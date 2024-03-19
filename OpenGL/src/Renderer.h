@@ -14,4 +14,5 @@ public:
 	void Clear(const float color[4]);
 	void Clear(glm::vec4& color);
 	void Draw(VertexArray& va, IndexBuffer& ib, Shader& shaders);
+	void DrawLines(VertexArray& va, int linesNum, Shader& shaders);
 };

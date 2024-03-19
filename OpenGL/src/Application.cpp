@@ -22,6 +22,7 @@
 #include "tests/TestTexture2D.h"
 #include "tests/TestTexture3D.h"
 #include "tests/TestBatchRender.h"
+#include "tests/TestAffineTransform.h"
 
 int main(void)
 {
@@ -72,6 +73,7 @@ int main(void)
         testMenu->RegisterTest<test::TestTexture2D>("texture 2D");
         testMenu->RegisterTest<test::TestBatchRender>("Batch Render");
         testMenu->RegisterTest<test::TestTexture3D>("texture 3D");
+        testMenu->RegisterTest<test::TestAffineTransform>("TestAffineTransform");
 
 
         while (!glfwWindowShouldClose(window))
