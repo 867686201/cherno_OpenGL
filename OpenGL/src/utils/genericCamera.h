@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 
+#include "utils/Utils.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -10,7 +11,7 @@ class GenericCamera : public Camera
 public:
 	GenericCamera(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
 		: m_eye(eye), m_center(center), m_up(up),
-		m_projMatrix(glm::mat4()), m_viewMatrix(glm::lookAt(m_eye, m_center, m_up))
+		m_projMatrix(glm::mat4()), m_viewMatrix(utils::lookAt(m_eye, m_center, m_up))
 	{
 	}
 	virtual ~GenericCamera() = default;
@@ -41,7 +42,11 @@ public:
 	}
 
 private:
-	void updateViewMatrix() { m_viewMatrix = glm::lookAt(m_eye, m_center, m_up); updateViewProjMatrix(); }
+	void updateViewMatrix() 
+	{ 
+		m_viewMatrix = utils::lookAt(m_eye, m_center, m_up);
+		updateViewProjMatrix(); 
+	}
 
 protected:
 	void updateViewProjMatrix() { m_viewProjMatrix = m_projMatrix * m_viewMatrix; }

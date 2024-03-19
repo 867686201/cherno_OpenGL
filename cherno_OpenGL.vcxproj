@@ -169,6 +169,8 @@
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\stb_image\stb_image.cpp" />
+    <ClCompile Include="OpenGL\src\utils\Transform.cpp" />
+    <ClCompile Include="OpenGL\src\utils\Utils.cpp" />
     <ClCompile Include="OpenGL\src\utils\PerspectCamera.h" />
     <ClCompile Include="OpenGL\src\VertexArray.cpp" />
     <ClCompile Include="OpenGL\src\VertexBuffer.cpp" />
@@ -620,6 +622,7 @@
     <ClInclude Include="OpenGL\src\thirdParty\stb_image\stb_image.h" />
     <ClInclude Include="OpenGL\src\utils\Camera.h" />
     <ClInclude Include="OpenGL\src\utils\CameraFactory.h" />
+    <ClInclude Include="OpenGL\src\utils\Utils.h" />
     <ClInclude Include="OpenGL\src\utils\GenericCamera.h" />
     <ClInclude Include="OpenGL\src\utils\OrthoCamera.h" />
     <ClInclude Include="OpenGL\src\utils\Transform.h" />

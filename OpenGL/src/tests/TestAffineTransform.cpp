@@ -4,9 +4,6 @@
 #include "GLError.h"
 #include "imgui/imgui.h"
 
-#include <iomanip> // 添加这个头文件以使用 std::fixed 和 std::setprecision
-#include <glm/gtc/epsilon.hpp> // 包含epsilonEqual函数
-
 #include <iostream>
 
 namespace test

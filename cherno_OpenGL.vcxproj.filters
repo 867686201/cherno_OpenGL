@@ -87,6 +87,12 @@
     <ClCompile Include="OpenGL\src\tests\TestAffineTransform.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL\src\utils\Utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\src\utils\Transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />
@@ -1435,6 +1441,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL\res\shaders\axis.shader">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\utils\Utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
