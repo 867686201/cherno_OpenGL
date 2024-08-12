@@ -6,6 +6,7 @@ class Texture
 {
 public:
 	Texture(const std::string& filePath);
+	Texture(unsigned char* buffer, int width, int height);
 	~Texture();
 
 	void Bind(unsigned int slot = 0);  
@@ -16,6 +17,8 @@ public:
 	inline int GetSlot() { return m_Slot; }
 
 private:
+	void CreateTexture();
+
 	unsigned int m_RendererID;
 	unsigned char* m_TexBuffer;
 	std::string m_FilePath;

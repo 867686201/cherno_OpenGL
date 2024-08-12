@@ -159,6 +159,7 @@
     <ClCompile Include="OpenGL\src\tests\TestClearColor.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestTexture2D.cpp" />
     <ClCompile Include="OpenGL\src\tests\TestTexture3D.cpp" />
+    <ClCompile Include="OpenGL\src\tests\TestTinyRenderer.cpp" />
     <ClCompile Include="OpenGL\src\Texture.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\glm\detail\glm.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui.cpp" />
@@ -169,6 +170,10 @@
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="OpenGL\src\thirdParty\stb_image\stb_image.cpp" />
+    <ClCompile Include="OpenGL\src\tinyrenderer\Model.cpp" />
+    <ClCompile Include="OpenGL\src\tinyrenderer\tgaimage.cpp" />
+    <ClCompile Include="OpenGL\src\tinyrenderer\TinyRenderer.cpp" />
+    <ClCompile Include="OpenGL\src\tinyrenderer\Util.cpp" />
     <ClCompile Include="OpenGL\src\utils\Transform.cpp" />
     <ClCompile Include="OpenGL\src\utils\Utils.cpp" />
     <ClCompile Include="OpenGL\src\utils\PerspectCamera.h" />
@@ -327,6 +332,7 @@
     <ClInclude Include="OpenGL\src\tests\TestClearColor.h" />
     <ClInclude Include="OpenGL\src\tests\TestTexture2D.h" />
     <ClInclude Include="OpenGL\src\tests\TestTexture3D.h" />
+    <ClInclude Include="OpenGL\src\tests\TestTinyRenderer.h" />
     <ClInclude Include="OpenGL\src\Texture.h" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\common.hpp" />
     <ClInclude Include="OpenGL\src\thirdParty\glm\detail\compute_common.hpp" />
@@ -620,6 +626,12 @@
     <ClInclude Include="OpenGL\src\thirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="OpenGL\src\thirdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="OpenGL\src\thirdParty\stb_image\stb_image.h" />
+    <ClInclude Include="OpenGL\src\tinyrenderer\LineStrategy.h" />
+    <ClInclude Include="OpenGL\src\tinyrenderer\LineStrategyFactory.h" />
+    <ClInclude Include="OpenGL\src\tinyrenderer\Model.h" />
+    <ClInclude Include="OpenGL\src\tinyrenderer\tgaimage.h" />
+    <ClInclude Include="OpenGL\src\tinyrenderer\TinyRenderer.h" />
+    <ClInclude Include="OpenGL\src\tinyrenderer\Util.h" />
     <ClInclude Include="OpenGL\src\utils\Camera.h" />
     <ClInclude Include="OpenGL\src\utils\CameraFactory.h" />
     <ClInclude Include="OpenGL\src\utils\Utils.h" />
