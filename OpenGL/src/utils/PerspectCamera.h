@@ -13,7 +13,7 @@ public:
 		updateProjMatrix();
 	}
 
-	void updateProjMatrixImpl() override
+	void updateProjMatrix() override
 	{
 		m_projMatrix = glm::perspective(glm::radians(m_fov), m_aspect, m_zNear, m_zFar); // 角度转为弧度
 	}
