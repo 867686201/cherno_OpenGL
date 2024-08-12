@@ -27,9 +27,10 @@ public:
 	}
 
 private:
-	void updateProjMatrixImpl() override
+	void updateProjMatrix() override
 	{
 		m_projMatrix = glm::ortho(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
+		updateViewProjMatrix();
 	}
 
 	float m_left;

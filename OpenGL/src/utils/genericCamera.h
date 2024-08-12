@@ -50,13 +50,12 @@ private:
 
 protected:
 	void updateViewProjMatrix() { m_viewProjMatrix = m_projMatrix * m_viewMatrix; }
-	// virtual void updateProjMatrix() = 0;  // 如果都是在子类实现该函数, 并调用 updateViewProjMatrix, 如果子类再派生新函数, 如果忘记 update, 可能会导致矩阵不同步
-	void updateProjMatrix()		// 使用 模板方法模式, 将updateProjMatrix的调用逻辑封装在一个不可被重写的成员函数中，然后在该函数中调用updateProjMatrix和updateViewProjMatrix。
-	{							// updateProjMatrix变成了一个被模板方法调用的钩子（hook），子类可以覆盖这个钩子，但不能改变模板方法本身。
-		updateProjMatrixImpl();
-		updateViewProjMatrix();
-	};
-	virtual void updateProjMatrixImpl() = 0;
+	virtual void updateProjMatrix() = 0;  // 如果都是在子类实现该函数, 并调用 updateViewProjMatrix, 如果子类再派生新函数, 如果忘记 update, 可能会导致矩阵不同步
+	//void updateProjMatrix()		// 使用 模板方法模式, 将updateProjMatrix的调用逻辑封装在一个不可被重写的成员函数中，然后在该函数中调用updateProjMatrix和updateViewProjMatrix。
+	//{							// updateProjMatrix变成了一个被模板方法调用的钩子（hook），子类可以覆盖这个钩子，但不能改变模板方法本身。
+	//	updateProjMatrixImpl();
+	//	updateViewProjMatrix();
+	//};
 protected:
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_projMatrix;
