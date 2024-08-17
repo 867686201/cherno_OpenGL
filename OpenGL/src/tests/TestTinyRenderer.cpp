@@ -107,7 +107,7 @@ namespace test
 
 		glm::mat4 mvp = m_camera->getProjViewMatrix();
 		m_Shader->SetUniformMat4fv("u_MVP", mvp);
-		//m_Texture->Bind();
+		m_Texture->Bind();
 		renderer.Draw(*m_VAO, *m_IBO, *m_Shader);
 
 
