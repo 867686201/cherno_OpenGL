@@ -108,6 +108,15 @@
     <ClCompile Include="OpenGL\src\tinyrenderer\Util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL\src\tinyrenderer\LineStrategy.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\src\tinyrenderer\LineStrategyFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\src\tinyrenderer\LineDrawer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL\res\shaders\basic.shader" />
@@ -1480,6 +1489,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL\src\tests\TestTinyRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\src\tinyrenderer\LineDrawer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

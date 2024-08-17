@@ -25,6 +25,12 @@ namespace test
 	private:
 
 		unsigned char* GetBuffer();
+		void InitLineAndTri();
+		void Draw();
+		void DrawLine();
+		void ClearColor();
+		void UpdateTexture();
+
 
 
 		std::unique_ptr<VertexArray> m_VAO;
@@ -37,6 +43,7 @@ namespace test
 		glm::vec3 m_Center;
 		glm::vec3 m_Up;
 
+		float m_ClearColor[4];
 		int m_texWidth;
 		int m_texHeight;
 		TinyRenderer m_tinyRenderer;

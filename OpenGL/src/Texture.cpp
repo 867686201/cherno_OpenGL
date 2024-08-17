@@ -2,7 +2,7 @@
 #include "stb_image/stb_image.h"
 #include "GLError.h"
 
-Texture::Texture(const std::string& filePath)
+Texture::Texture(const std::string& filePath)					
 	: m_RendererID(0), m_TexBuffer(nullptr), m_FilePath(filePath),
 	m_Width(0), m_Height(0), m_Channels(0), m_Slot(0)
 {
@@ -16,7 +16,7 @@ Texture::Texture(const std::string& filePath)
 	}
 }
 
-Texture::Texture(unsigned char* buffer, int width, int height)
+Texture::Texture(unsigned char* buffer, int width, int height)			
 	: m_RendererID(0), m_TexBuffer(buffer), m_FilePath(),
 	m_Width(width), m_Height(height), m_Channels(4), m_Slot(0)
 {
@@ -33,7 +33,17 @@ void Texture::CreateTexture()
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
+	//                                mipmap_level					宽度(必须为0)
 	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_TexBuffer));
+	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+void Texture::UpdateTexture(unsigned char* buffer)
+{
+	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
+	// 更新已经存在的纹理对象的一个子区域（或全部）。它不重新分配内存，而是使用已有的内存块并更新纹理的部分内容
+	//                             mipmap_level  xy 偏移  xy 范围
+	GLCall(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, buffer));
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 

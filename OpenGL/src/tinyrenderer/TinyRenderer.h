@@ -3,6 +3,7 @@
 #include "tgaimage.h"
 #include "model.h"
 #include "Util.h"
+#include "LineDrawer.h"
 
 #include <vector>
 #include <memory>
@@ -19,9 +20,13 @@ public:
     void setModel(const std::string& filePath); // 设置模型
 
     void render(); // 渲染场景
+    void renderLine(LineAlgorithm algo = LineAlgorithm::Bresenham);
 
+    void addLine(const glm::vec2& v0, const glm::vec2& v1, TGAColor color) { m_Lines.emplace_back(v0, v1, color); };
 
-    void clearFrameBuffer(); // 清空帧缓冲区
+    void clearFrameBuffer(glm::vec4 color); // 清空帧缓冲区
+
+    void writeFile(std::string path = "out.tga");
 
     void setViewPos(const glm::vec3& pos) { m_viewPos = pos; }; // 设置光源
     void addLight(const glm::vec4& light) { m_lights.push_back(light); }; // 设置光源
@@ -38,6 +43,7 @@ private:
     std::shared_ptr<Model> m_model;
     glm::vec3 m_viewPos;
     std::vector<glm::vec4> m_lights;
+    std::vector<Line> m_Lines;
     std::unique_ptr<TGAImage> m_frameBuffer;
     std::vector<double> m_zbuffer;
 };

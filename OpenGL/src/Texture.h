@@ -16,6 +16,7 @@ public:
 	inline int GetHeight() { return m_Height; }
 	inline int GetSlot() { return m_Slot; }
 
+	void UpdateTexture(unsigned char* buffer);
 private:
 	void CreateTexture();
 

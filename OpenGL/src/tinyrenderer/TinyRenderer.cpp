@@ -3,18 +3,19 @@
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
 
-TinyRenderer::TinyRenderer() : m_width(800), m_height(800), m_frameBuffer(nullptr) {}
+TinyRenderer::TinyRenderer() : m_width(800), m_height(800), m_frameBuffer(nullptr), m_viewPos(glm::vec3(0, 0, 3)) {}
 
 
 TinyRenderer::TinyRenderer(int width = 800, int height = 800)
 	: m_width(width), m_height(height), m_frameBuffer(std::make_unique<TGAImage>(width, height, TGAImage::RGBA)), 
-	m_zbuffer(width*height, std::numeric_limits<double>::lowest())
+	m_zbuffer(width*height, std::numeric_limits<double>::lowest()), m_viewPos(glm::vec3(0, 0, 3))
 {
 }
 
 void TinyRenderer::render()
 {
 	if (!m_model || !m_frameBuffer) return;
+	std::fill(m_zbuffer.begin(), m_zbuffer.end(), std::numeric_limits<double>::lowest());
 	for (int i = 0; i < m_model->nfaces(); i++)
 	{
 		Face face = m_model->face(i);
@@ -34,6 +35,37 @@ void TinyRenderer::render()
 		glm::vec3 result_color = calculateLighting(world_coords[0], n); // 平面着色, 取的三角形第一个顶点
 		triangle(screen_coords, world_coords, m_zbuffer, *m_frameBuffer, result_color);	// 三角形光栅化
 	}
+	writeFile();
+}
+
+void TinyRenderer::renderLine(LineAlgorithm algo)
+{
+	StrategyFactory factory;
+
+	// 使用 Bresenham 算法绘制线条
+	LineDrawer Drawer(&factory, algo);
+	Drawer.draw(m_Lines, *m_frameBuffer);
+	writeFile();
+}
+
+void TinyRenderer::clearFrameBuffer(glm::vec4 color)
+{
+	TGAColor clearColor(color.r * 255, color.g * 255, color.b * 255, color.a * 255);	// glm vec4 分量范围为 0-1
+	for (int i = 0; i < m_frameBuffer.get()->get_width(); i++)
+	{
+		for (int j = 0; j < m_frameBuffer.get()->get_height(); j++)
+		{
+			m_frameBuffer.get()->set(i, j, TGAColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a));
+		}
+	}
+	writeFile();
+}
+
+void TinyRenderer::writeFile(std::string path)
+{
+	m_frameBuffer.get()->flip_vertically();
+	m_frameBuffer.get()->write_tga_file(path.c_str());
+	m_frameBuffer.get()->flip_vertically();
 }
 
 void TinyRenderer::setModel(const std::string& filePath)
